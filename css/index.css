@@ -1,0 +1,9 @@
+html, body, .app {
+  height: 100%;
+  width:  100%;
+}
+
+#map {
+  height: 75%;
+  width: 100%;
+}
