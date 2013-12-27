@@ -116,10 +116,12 @@ function initApp() {
   navigator.geolocation.watchPosition(function success(pos) {
     map.setView([pos.coords.latitude, pos.coords.longitude], 15);
     L.circle([pos.coords.latitude, pos.coords.longitude], 20, { color: "#f88", fillColor: "#f88", fillOpacity: 1.0 }).addTo(map);
-    loadPanoramicViews (pos, layers);
-    loadPlaygrounds    (pos, layers);
-    loadToilets        (pos, layers);
-    loadRestaurants    (pos, layers);
+    if(document.getElementById("togglePanoramicviews").classList.contains("on")) loadPanoramicViews (pos, layers);
+    if(document.getElementById("togglePlaygrounds"   ).classList.contains("on")) loadPlaygrounds    (pos, layers);
+    if(document.getElementById("toggleToilets"       ).classList.contains("on")) loadToilets        (pos, layers);
+    if(document.getElementById("toggleRestaurants"   ).classList.contains("on") ||
+       document.getElementById("toggleCafes"         ).classList.contains("on") ||
+       document.getElementById("toggleFastfoods"     ).classList.contains("on")) loadRestaurants    (pos, layers);
   }, function error(err) { console.log("Dang, no geolocation!", err); });
 
   document.getElementById("togglePanoramicviews").addEventListener("click", function() {
