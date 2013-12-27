@@ -17,6 +17,7 @@ function loadPanoramicViews(pos, layers) {
       marker.bindPopup("<h2>" + panoramas[i]["a.Name"] + "</h2>");
       markers.push(marker);
     }
+    if(layers.panoramicViews) map.removeLayer(layers.panoramicViews);
     layers.panoramicViews = L.layerGroup(markers);
     layers.panoramicViews.addTo(map);
   };
@@ -41,6 +42,7 @@ function loadPlaygrounds(pos, layers) {
       marker.addTo(map);
       markers.push(marker);
     }
+    if(layers.playgrounds) map.removeLayer(layers.playgrounds);
     layers.playgrounds = L.layerGroup(markers);
     layers.playgrounds.addTo(map);
   };
@@ -62,6 +64,7 @@ function loadToilets(pos) {
           "<p><strong>Gebühr:</strong> " + toilet.fee + "</p>");
       markers.push(marker);
     }
+    if(layers.toilets) map.removeLayer(layers.toilets);
     layers.toilets = L.layerGroup(markers);
     layers.toilets.addTo(map);
   };
@@ -75,7 +78,7 @@ function loadRestaurants(pos, layers) {
     var restaurants = JSON.parse(this.responseText).result;
     var icons = {
         "cafe":       L.icon({iconUrl: "img/cafe.png", iconAnchor: [16, 37]}),
-        "fast_food":   L.icon({iconUrl: "img/fastfood.png", iconAnchor: [16, 37]}),
+        "fast_food":  L.icon({iconUrl: "img/fastfood.png", iconAnchor: [16, 37]}),
         "restaurant": L.icon({iconUrl: "img/restaurant.png", iconAnchor: [16, 37]})
     };
     var markers = {
@@ -85,6 +88,7 @@ function loadRestaurants(pos, layers) {
     };
     for(var i=0;i<restaurants.length;i++) {
       var restaurant = restaurants[i];
+      if(!document.getElementById("toggle_" + restaurant.amenity).classList.contains("on")) continue;
       var marker = L.marker([restaurant["lat"], restaurant["lon"]], {icon: icons[restaurant.amenity]});
       marker.bindPopup(
           "<h2>" + restaurant.name + "</h2>" + 
@@ -94,6 +98,8 @@ function loadRestaurants(pos, layers) {
     }
     for(property in markers) {
       if(!markers.hasOwnProperty(property)) continue;
+      if(layers.restaurants[property]) map.removeLayer(layers.restaurants[property]);
+
       layers.restaurants[property] = L.layerGroup(markers[property]);
       layers.restaurants[property].addTo(map);
     }
@@ -119,9 +125,9 @@ function initApp() {
     if(document.getElementById("togglePanoramicviews").classList.contains("on")) loadPanoramicViews (pos, layers);
     if(document.getElementById("togglePlaygrounds"   ).classList.contains("on")) loadPlaygrounds    (pos, layers);
     if(document.getElementById("toggleToilets"       ).classList.contains("on")) loadToilets        (pos, layers);
-    if(document.getElementById("toggleRestaurants"   ).classList.contains("on") ||
-       document.getElementById("toggleCafes"         ).classList.contains("on") ||
-       document.getElementById("toggleFastfoods"     ).classList.contains("on")) loadRestaurants    (pos, layers);
+    if(document.getElementById("toggle_restaurant"   ).classList.contains("on") ||
+       document.getElementById("toggle_cafe"         ).classList.contains("on") ||
+       document.getElementById("toggle_fast_food"    ).classList.contains("on")) loadRestaurants    (pos, layers);
   }, function error(err) { console.log("Dang, no geolocation!", err); });
 
   document.getElementById("togglePanoramicviews").addEventListener("click", function() {
@@ -140,17 +146,17 @@ function initApp() {
     (map.hasLayer(layers.toilets) ? map.removeLayer(layers.toilets) : map.addLayer(layers.toilets));
   });
   
-  document.getElementById("toggleRestaurants").addEventListener("click", function() {
+  document.getElementById("toggle_restaurant").addEventListener("click", function() {
     this.classList.toggle("on");
     (map.hasLayer(layers.restaurants.restaurant) ? map.removeLayer(layers.restaurants.restaurant) : map.addLayer(layers.restaurants.restaurant));
   });
 
-  document.getElementById("toggleCafes").addEventListener("click", function() {
+  document.getElementById("toggle_cafe").addEventListener("click", function() {
     this.classList.toggle("on");
     (map.hasLayer(layers.restaurants.cafe) ? map.removeLayer(layers.restaurants.cafe) : map.addLayer(layers.restaurants.cafe));
   });
 
-  document.getElementById("toggleFastfoods").addEventListener("click", function() {
+  document.getElementById("toggle_fast_food").addEventListener("click", function() {
     this.classList.toggle("on");
     (map.hasLayer(layers.restaurants.fast_food) ? map.removeLayer(layers.restaurants.fast_food) : map.addLayer(layers.restaurants.fast_food));
   });
