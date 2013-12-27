@@ -1,9 +1,31 @@
 html, body, .app {
   height: 100%;
-  width:  100%;
+  width:  99%;
+  box-sizing: border-box;
 }
 
 #map {
   height: 75%;
   width: 100%;
+}
+
+.row {
+  text-align: center;
+}
+
+button.on {
+  border: inset 1px;
+  border-radius: 2px;
+  background-color: #6f6;
+}
+
+button {
+  border: outset 1px;
+  border-radius: 2px;
+  background-color: #f33;
+  display: inline-block;
+  width: 48%;
+  height: 12mm;
+  box-sizing: border-box;
+  margin: 0.5% 0.5%;
 }
