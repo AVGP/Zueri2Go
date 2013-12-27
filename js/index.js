@@ -119,8 +119,9 @@ function initApp() {
   };
   
   window.layers = layers;
+  var initialLocation = true;
   navigator.geolocation.watchPosition(function success(pos) {
-    map.setView([pos.coords.latitude, pos.coords.longitude], 15);
+    if(initialLocation) map.setView([pos.coords.latitude, pos.coords.longitude], 16);
     L.circle([pos.coords.latitude, pos.coords.longitude], 20, { color: "#f88", fillColor: "#f88", fillOpacity: 1.0 }).addTo(map);
     if(document.getElementById("togglePanoramicviews").classList.contains("on")) loadPanoramicViews (pos, layers);
     if(document.getElementById("togglePlaygrounds"   ).classList.contains("on")) loadPlaygrounds    (pos, layers);
@@ -128,6 +129,8 @@ function initApp() {
     if(document.getElementById("toggle_restaurant"   ).classList.contains("on") ||
        document.getElementById("toggle_cafe"         ).classList.contains("on") ||
        document.getElementById("toggle_fast_food"    ).classList.contains("on")) loadRestaurants    (pos, layers);
+       
+    initialLocation = false;
   }, function error(err) { console.log("Dang, no geolocation!", err); });
 
   document.getElementById("togglePanoramicviews").addEventListener("click", function() {
