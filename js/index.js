@@ -45,10 +45,11 @@ function loadPlaygrounds(pos) {
 //Get rolling!
 
 document.addEventListener("deviceready", function() {
+  console.log("Hello");
   navigator.geolocation.getCurrentPosition(function success(pos) {
     map.setView([pos.coords.latitude, pos.coords.longitude], 15);
     L.circle([pos.coords.latitude, pos.coords.longitude], 20, { color: "#f88", fillColor: "#f88", fillOpacity: 1.0 }).addTo(map);
     loadPanoramicViews(pos);
     loadPlaygrounds(pos);
-  });
+  }, function error() { console.log("Dang, no geolocation!") });
 });
