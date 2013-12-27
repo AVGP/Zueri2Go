@@ -3,17 +3,32 @@
     <head>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
         <script src="js/leaflet.js"></script>
-        <title>Hello World</title>
+        <title>Zueri2Go</title>
     </head>
     <body>
         <div class="app">
             <div id="map"></div>
+            <div style="text-align: justify">
+                <div class="row">
+                    <button id="togglePanoramicviews" class="on">Panoramic views</button>
+                    <button id="toggleRestaurants" class="on">Restaurants</button>
+                </div>
+                <div class="row">
+                    <button id="togglePlaygrounds" class="on">Playgrounds</button>
+                    <button id="toggleCafes" class="on">Cafes</button>
+                </div>
+                <div class="row">
+                    <button id="toggleToilets" class="on">Toilets</button>
+                    <button id="toggleFastfoods" class="on">Fastfood</button>
+                </div>
+            </div>
         </div>
-        
+
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
