@@ -42,14 +42,58 @@ function loadPlaygrounds(pos) {
   xhr.send(JSON.stringify({expr: '[ a | a <~ ch_zh_spielplaetze, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < 2.0 ]'}));
 }
 
+function loadToilets(pos) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    var toilets = JSON.parse(this.responseText).result;
+    console.log(toilets, toilets[0]);
+    var icon = L.icon({iconUrl: "img/toilets.png", iconAnchor: [16, 37]});
+    for(var i=0;i<toilets.length;i++) {
+      var toilet = toilets[i];
+      var marker = L.marker([toilet["lat"], toilet["lon"]], {icon: icon});
+      marker.bindPopup(
+          "<h2>" + toilet.name + "</h2>" + 
+          "<p><strong>Gebühr:</strong> " + toilet.fee + "</p>");
+      marker.addTo(map);
+    }
+  };
+  xhr.open('post', 'https://data.mingle.io/');
+  xhr.send(JSON.stringify({expr: '[ a | a <~ osmpois, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < 2.0 && a.type =~ "AMENITY_TOILETS"]'}));
+}
+
+function loadRestaurants(pos) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    var restaurants = JSON.parse(this.responseText).result;
+    var icons = {
+        "cafe":       L.icon({iconUrl: "img/cafe.png", iconAnchor: [16, 37]}),
+        "fast_food":   L.icon({iconUrl: "img/fastfood.png", iconAnchor: [16, 37]}),
+        "restaurant": L.icon({iconUrl: "img/restaurant.png", iconAnchor: [16, 37]})
+    };
+    for(var i=0;i<restaurants.length;i++) {
+      var restaurant = restaurants[i];
+      console.log(restaurant, icons[restaurant.amenity]);
+      var marker = L.marker([restaurant["lat"], restaurant["lon"]], {icon: icons[restaurant.amenity]});
+      marker.bindPopup(
+          "<h2>" + restaurant.name + "</h2>" + 
+          "<p><strong>Küche:</strong> " + restaurant.cuisine || 'unbekannt' + "</p>");
+      marker.addTo(map);
+    }
+  };
+  xhr.open('post', 'https://data.mingle.io/');
+  xhr.send(JSON.stringify({expr: '[ a | a <~ osmpois, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < 2.0 && a.type =~ "FOOD_RESTAURANT|FOOD_CAFE|FOOD_FASTFOOD"]'}));
+}
+
+
 //Get rolling!
 
 document.addEventListener("deviceready", function() {
-  console.log("Hello");
   navigator.geolocation.getCurrentPosition(function success(pos) {
     map.setView([pos.coords.latitude, pos.coords.longitude], 15);
     L.circle([pos.coords.latitude, pos.coords.longitude], 20, { color: "#f88", fillColor: "#f88", fillOpacity: 1.0 }).addTo(map);
     loadPanoramicViews(pos);
     loadPlaygrounds(pos);
+    loadToilets(pos);
+    loadRestaurants(pos);
   }, function error() { console.log("Dang, no geolocation!") });
 });
