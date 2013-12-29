@@ -3,28 +3,32 @@
     <head>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
+        <meta name="mobile-web-app-capable" content="yes">
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
+        <link rel="shortcut icon" sizes="196x196" href="icon.png" />
         <script src="js/leaflet.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/i18next-1.7.1.min.js"></script>
         <title>Zueri2Go</title>
     </head>
     <body>
         <div class="app">
             <div id="map"></div>
-            <div style="text-align: justify">
+            <div id="buttons" style="text-align: justify">
                 <div class="row">
-                    <button id="togglePanoramicviews" class="on">Panoramic views</button>
-                    <button id="toggle_restaurant" class="on">Restaurants</button>
+                    <button id="togglePanoramicviews" class="on" data-i18n="buttons.panoramicViews">Aussichtspunkte</button>
+                    <button id="toggle_restaurant" class="on" data-i18n="buttons.restaurants">Restaurants</button>
                 </div>
                 <div class="row">
-                    <button id="togglePlaygrounds" class="on">Playgrounds</button>
-                    <button id="toggle_cafe" class="on">Cafes</button>
+                    <button id="togglePlaygrounds" class="on" data-i18n="buttons.playgrounds">Spielplaetze</button>
+                    <button id="toggle_cafe" class="on" data-i18n="buttons.cafes">Cafes</button>
                 </div>
                 <div class="row">
-                    <button id="toggleToilets" class="on">Toilets</button>
-                    <button id="toggle_fast_food" class="on">Fastfood</button>
+                    <button id="toggleToilets" class="on" data-i18n="buttons.toilets">Toiletten</button>
+                    <button id="toggle_fast_food" class="on" data-i18n="buttons.fastfoods">Imbisse</button>
                 </div>
             </div>
         </div>
