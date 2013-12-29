@@ -1,0 +1,13 @@
+{
+    "buttons": {
+        "panoramicViews":   "Punti di vista",
+        "restaurants":      "Ristoranti",
+        "playgrounds":      "Campi da gioco",
+        "cafes":            "Caffè",
+        "toilets":          "Servizi igienici",
+        "fastfoods":        "Snack"
+    },
+    "popups": {
+
+    }
+}
