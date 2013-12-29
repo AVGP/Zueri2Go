@@ -18,6 +18,7 @@ As of now it supports
 * German
 * English
 * Italian
+* French
 
 #Can I install it somehow?
 If you're using Chrome, you can go into the menu and select "Add to homescreen" or it can be build with Phonegap, too.
