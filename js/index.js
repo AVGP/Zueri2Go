@@ -54,7 +54,7 @@ function loadPlaygrounds(pos, layers) {
   xhr.send(JSON.stringify({expr: '[ a | a <~ ch_zh_spielplaetze, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < 2.0 ]'}));
 }
 
-function loadToilets(pos) {
+function loadToilets(pos, layers) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function() {
     var toilets = JSON.parse(this.responseText).result;
