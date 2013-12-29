@@ -1,3 +1,7 @@
+i18n.init({fallbackLng: 'de', useCookie: false}, function(t) {
+    $("#buttons").i18n()
+});
+
 var map = L.map('map').setView([47.367347, 8.5500025], 13);
 L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
@@ -35,7 +39,7 @@ function loadPlaygrounds(pos, layers) {
       var playground = playgrounds[i];
       var marker = L.marker([playground["lat"], playground["lon"]], {icon: icon});
       marker.bindPopup(
-          "<h2>" + playground.Objektbezeichung + "</h2>" + 
+          "<h2>" + playground.Objektbezeichung + "</h2>" +
           "<p><strong>Altersgruppe:</strong> " + playground.Alterskategorie + "</p>" +
           "<p><strong>Besonderheiten:</strong> " + playground.Besonderheiten + "</p>" +
           "<p><strong>Ausstattung</strong>: " + playground.Infrastruktur +  ", " + playground.Spielgeraete + "<p>");
@@ -60,7 +64,7 @@ function loadToilets(pos) {
       var toilet = toilets[i];
       var marker = L.marker([toilet["lat"], toilet["lon"]], {icon: icon});
       marker.bindPopup(
-          "<h2>" + toilet.name + "</h2>" + 
+          "<h2>" + toilet.name + "</h2>" +
           "<p><strong>Gebühr:</strong> " + toilet.fee + "</p>");
       markers.push(marker);
     }
@@ -91,7 +95,7 @@ function loadRestaurants(pos, layers) {
       if(!document.getElementById("toggle_" + restaurant.amenity).classList.contains("on")) continue;
       var marker = L.marker([restaurant["lat"], restaurant["lon"]], {icon: icons[restaurant.amenity]});
       marker.bindPopup(
-          "<h2>" + restaurant.name + "</h2>" + 
+          "<h2>" + restaurant.name + "</h2>" +
           "<p><strong>Küche:</strong> " + restaurant.cuisine || 'unbekannt' + "</p>");
       marker.addTo(map);
       markers[restaurant.amenity].push(marker);
@@ -117,7 +121,7 @@ function initApp() {
     toilets:        null,
     restaurants:    {}
   };
-  
+
   window.layers = layers;
   var initialLocation = true;
   navigator.geolocation.watchPosition(function success(pos) {
@@ -129,7 +133,7 @@ function initApp() {
     if(document.getElementById("toggle_restaurant"   ).classList.contains("on") ||
        document.getElementById("toggle_cafe"         ).classList.contains("on") ||
        document.getElementById("toggle_fast_food"    ).classList.contains("on")) loadRestaurants    (pos, layers);
-       
+
     initialLocation = false;
   }, function error(err) { console.log("Dang, no geolocation!", err); });
 
@@ -138,17 +142,17 @@ function initApp() {
     (map.hasLayer(layers.panoramicViews) ? map.removeLayer(layers.panoramicViews) : map.addLayer(layers.panoramicViews));
   });
 
-  
+
   document.getElementById("togglePlaygrounds").addEventListener("click", function(e) {
     this.classList.toggle("on");
     (map.hasLayer(layers.playgrounds) ? map.removeLayer(layers.playgrounds) : map.addLayer(layers.playgrounds));
   });
-  
+
   document.getElementById("toggleToilets").addEventListener("click", function() {
     this.classList.toggle("on");
     (map.hasLayer(layers.toilets) ? map.removeLayer(layers.toilets) : map.addLayer(layers.toilets));
   });
-  
+
   document.getElementById("toggle_restaurant").addEventListener("click", function() {
     this.classList.toggle("on");
     (map.hasLayer(layers.restaurants.restaurant) ? map.removeLayer(layers.restaurants.restaurant) : map.addLayer(layers.restaurants.restaurant));
