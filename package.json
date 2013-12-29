@@ -2,7 +2,7 @@
   "name": "Zueri2Go",
   "description": "A mobile web app that helps you find interesting spots in Zurich around you",
   "version": "0.0.1",
-  "dev-dependencies": {
+  "devDependencies": {
     "casperjs": "*"
   },
   "scripts": {
