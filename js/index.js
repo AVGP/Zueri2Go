@@ -1,5 +1,6 @@
 i18n.init({fallbackLng: 'de', useCookie: false}, function(t) {
-    $("#buttons").i18n()
+    $("#buttons").i18n();
+    window.i18n = t;
 });
 
 var map = L.map('map').setView([47.367347, 8.5500025], 13);
@@ -40,9 +41,9 @@ function loadPlaygrounds(pos, layers) {
       var marker = L.marker([playground["lat"], playground["lon"]], {icon: icon});
       marker.bindPopup(
           "<h2>" + playground.Objektbezeichung + "</h2>" +
-          "<p><strong>Altersgruppe:</strong> " + playground.Alterskategorie + "</p>" +
-          "<p><strong>Besonderheiten:</strong> " + playground.Besonderheiten + "</p>" +
-          "<p><strong>Ausstattung</strong>: " + playground.Infrastruktur +  ", " + playground.Spielgeraete + "<p>");
+          "<p><strong>" + i18n("popups.ages") + ":</strong> " + playground.Alterskategorie + "</p>" +
+          "<p><strong>" + i18n("popups.remarks") + ":</strong> " + playground.Besonderheiten + "</p>" +
+          "<p><strong>" + i18n("popups.facilities") + ":</strong> " + playground.Infrastruktur +  ", " + playground.Spielgeraete + "<p>");
       marker.addTo(map);
       markers.push(marker);
     }
@@ -65,7 +66,7 @@ function loadToilets(pos, layers) {
       var marker = L.marker([toilet["lat"], toilet["lon"]], {icon: icon});
       marker.bindPopup(
           "<h2>" + toilet.name + "</h2>" +
-          "<p><strong>Gebühr:</strong> " + toilet.fee + "</p>");
+          "<p><strong>" + i18n("popups.fee") + ":</strong> " + toilet.fee + "</p>");
       markers.push(marker);
     }
     if(layers.toilets) map.removeLayer(layers.toilets);
@@ -96,7 +97,7 @@ function loadRestaurants(pos, layers) {
       var marker = L.marker([restaurant["lat"], restaurant["lon"]], {icon: icons[restaurant.amenity]});
       marker.bindPopup(
           "<h2>" + restaurant.name + "</h2>" +
-          "<p><strong>Küche:</strong> " + restaurant.cuisine || 'unbekannt' + "</p>");
+          "<p><strong>" + i18n("popups.food_type") + ":</strong> " + restaurant.cuisine || '?' + "</p>");
       marker.addTo(map);
       markers[restaurant.amenity].push(marker);
     }
