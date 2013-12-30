@@ -8,6 +8,10 @@
         "fastfoods":        "Imbisse"
     },
     "popups": {
-
+        "ages":         "Altersgruppe",
+        "remarks":      "Besonderheiten",
+        "facilities":   "Ausstattung",
+        "fee":          "Gebühr",
+        "food_type":    "Küche"
     }
 }

@@ -8,6 +8,10 @@
         "fastfoods":        "Fastfood"
     },
     "popups": {
-
+        "ages":         "Ages",
+        "remarks":      "Remarks",
+        "facilities":   "Facilities",
+        "fee":          "Fee",
+        "food_type":    "Food"
     }
 }

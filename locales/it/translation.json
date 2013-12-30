@@ -8,6 +8,10 @@
         "fastfoods":        "Snack"
     },
     "popups": {
-
+        "ages":         "Fascia di età",
+        "remarks":      "Speciale",
+        "facilities":   "Apparecchiatura",
+        "fee":          "Tassa",
+        "food_type":    "Cucina"
     }
 }

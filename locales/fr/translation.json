@@ -8,6 +8,10 @@
         "fastfoods":        "Snacks"
     },
     "popups": {
-
+        "ages":         "Groupes d'âge",
+        "remarks":      "Remarques",
+        "facilities":   "Aménagements",
+        "fee":          "Frais",
+        "food_type":    "Cuisine"
     }
 }
