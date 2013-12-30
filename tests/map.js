@@ -14,7 +14,7 @@ function testMarkerType(test, imgFileName, expectedNumber, expectedName) {
 
 
 //And the tests begin!
-
+casper.options.waitTimeout = 10000;
 casper.test.begin("Testing markers and popups", 17, function(test) {
   casper.start("https://preview.c9.io/avgp/zueri2go/Zueri2Go/www/index.html");
 
