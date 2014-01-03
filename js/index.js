@@ -11,7 +11,7 @@ L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/
 
 //Some functions
 
-function loadPanoramicViews(pos, layers) {
+function loadPanoramicViews(pos, layers, radius) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function() {
     var panoramas = JSON.parse(this.responseText).result;
@@ -27,10 +27,10 @@ function loadPanoramicViews(pos, layers) {
     layers.panoramicViews.addTo(map);
   };
   xhr.open('post', 'https://data.mingle.io/');
-  xhr.send(JSON.stringify({expr: '[ {a.Name, a.lat, a.lon} | a <~ ch_zh_aussichtspunkt, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < 2.0 ]'}));
+  xhr.send(JSON.stringify({expr: '[ {a.Name, a.lat, a.lon} | a <~ ch_zh_aussichtspunkt, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < ' + (radius || 2.0) + ' ]'}));
 }
 
-function loadPlaygrounds(pos, layers) {
+function loadPlaygrounds(pos, layers, radius) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function() {
     var playgrounds = JSON.parse(this.responseText).result;
@@ -52,10 +52,10 @@ function loadPlaygrounds(pos, layers) {
     layers.playgrounds.addTo(map);
   };
   xhr.open('post', 'https://data.mingle.io/');
-  xhr.send(JSON.stringify({expr: '[ a | a <~ ch_zh_spielplaetze, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < 2.0 ]'}));
+  xhr.send(JSON.stringify({expr: '[ a | a <~ ch_zh_spielplaetze, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < ' + (radius || 2.0) + ' ]'}));
 }
 
-function loadToilets(pos, layers) {
+function loadToilets(pos, layers, radius) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function() {
     var toilets = JSON.parse(this.responseText).result;
@@ -74,10 +74,10 @@ function loadToilets(pos, layers) {
     layers.toilets.addTo(map);
   };
   xhr.open('post', 'https://data.mingle.io/');
-  xhr.send(JSON.stringify({expr: '[ a | a <~ osmpois, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < 2.0 && a.type =~ "AMENITY_TOILETS"]'}));
+  xhr.send(JSON.stringify({expr: '[ a | a <~ osmpois, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < ' + (radius || 2.0) + ' && a.type =~ "AMENITY_TOILETS"]'}));
 }
 
-function loadRestaurants(pos, layers) {
+function loadRestaurants(pos, layers, radius) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function() {
     var restaurants = JSON.parse(this.responseText).result;
@@ -110,7 +110,7 @@ function loadRestaurants(pos, layers) {
     }
   };
   xhr.open('post', 'https://data.mingle.io/');
-  xhr.send(JSON.stringify({expr: '[ a | a <~ osmpois, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < 2.0 && a.type =~ "FOOD_RESTAURANT|FOOD_CAFE|FOOD_FASTFOOD"]'}));
+  xhr.send(JSON.stringify({expr: '[ a | a <~ osmpois, dist(a.lat, a.lon, ' + pos.coords.latitude + ', ' + pos.coords.longitude + ') < ' + (radius || 2.0) + ' && a.type =~ "FOOD_RESTAURANT|FOOD_CAFE|FOOD_FASTFOOD"]'}));
 }
 
 
@@ -125,6 +125,15 @@ function initApp() {
 
   window.layers = layers;
   var initialLocation = true;
+  var initialPos = {coords: { latitude: 47.367347, longitude: 8.5500025}};
+  
+  if(document.getElementById("togglePanoramicviews").classList.contains("on")) loadPanoramicViews (initialPos, layers);
+  if(document.getElementById("togglePlaygrounds"   ).classList.contains("on")) loadPlaygrounds    (initialPos, layers);
+  if(document.getElementById("toggleToilets"       ).classList.contains("on")) loadToilets        (initialPos, layers);
+  if(document.getElementById("toggle_restaurant"   ).classList.contains("on") ||
+     document.getElementById("toggle_cafe"         ).classList.contains("on") ||
+     document.getElementById("toggle_fast_food"    ).classList.contains("on")) loadRestaurants    (initialPos, layers);
+  
   navigator.geolocation.watchPosition(function success(pos) {
     if(initialLocation) map.setView([pos.coords.latitude, pos.coords.longitude], 16);
     L.circle([pos.coords.latitude, pos.coords.longitude], 20, { color: "#f88", fillColor: "#f88", fillOpacity: 1.0 }).addTo(map);
@@ -136,7 +145,16 @@ function initApp() {
        document.getElementById("toggle_fast_food"    ).classList.contains("on")) loadRestaurants    (pos, layers);
 
     initialLocation = false;
-  }, function error(err) { console.log("Dang, no geolocation!", err); });
+  }, function error(err) {
+    console.log("Dang, no geolocation!", err);
+    if(document.getElementById("togglePanoramicviews").classList.contains("on")) loadPanoramicViews (initialPos, layers, 10);
+    if(document.getElementById("togglePlaygrounds"   ).classList.contains("on")) loadPlaygrounds    (initialPos, layers, 10);
+    if(document.getElementById("toggleToilets"       ).classList.contains("on")) loadToilets        (initialPos, layers, 10);
+    if(document.getElementById("toggle_restaurant"   ).classList.contains("on") ||
+       document.getElementById("toggle_cafe"         ).classList.contains("on") ||
+       document.getElementById("toggle_fast_food"    ).classList.contains("on")) loadRestaurants    (initialPos, layers, 10);
+
+  }, { timeout: 5000 });
 
   document.getElementById("togglePanoramicviews").addEventListener("click", function() {
     this.classList.toggle("on");
